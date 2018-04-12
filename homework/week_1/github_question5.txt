@@ -1,0 +1,16 @@
+5. What is a so called “branch” in Git terms and why would you use it.
+
+Een branch in een pointer naar een commit. Je default branch wordt master genoemd
+en wanneer je commits maakt zal de master branch telkens naar je laatste commit
+pointen.
+
+Je kan ook een nieuwe branch maken. Hierbij wordt er dus een nieuwe pointer
+aangemaakt die je kan veranderen. Git weet op elke branch je zit door een 
+pointer die HEAD wordt genoemd. HEAD is een pointer naar je local branch, waar je
+nu op zit. Je kan switchen naar een andere branch door de git checkout command.
+Door de checkout command gaat de HEAD pointen naar de branch die jij aangeeft.
+
+Het nut hiervan is dat je naar oudere versies terug kunt gaan en daar verder
+op bouwen, of je kan met verder bouwen op je nieuwe branch. Je kunt dus
+verschillende nieuwe toevoegingen testen, los van elkaar. Later kan je die
+nieuwe toevoegingen toevoegen aan de master branch.
