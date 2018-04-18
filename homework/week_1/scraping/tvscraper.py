@@ -74,7 +74,7 @@ def save_csv(outfile, tvseries):
 
     # iterate over tvseries, writing to csv file
     for tvserie in tvseries:
-        writer.writerow(tvserie)
+    	writer.writerow(tvserie)
 
 
 def simple_get(url):
