@@ -67,40 +67,76 @@ function createTransform(domain, range){
 var minTemp = Math.min(...tempList)
 var maxTemp = Math.max(...tempList)
 
+// min and max screen width and heights
+var minWidth = 30;
+var maxWidth = 570;
+var minHeight = 30;
+var maxHeight = 270;
+
+var temperatures = [];
 // transform temperature data into screen coordinates
-var tempTransform = createTransform([minTemp,maxTemp],[0,300]);
+var tempTransform = createTransform([maxTemp, minTemp],[minHeight,maxHeight]);
 for (i = 0; i < tempList.length; i++) {
 	var temperature = tempTransform(tempList[i]);
-	console.log(temperature)
+	temperatures.push(temperature)
 }
 
 // get the min and max dates in milisec
 var minDate = Math.min(...dateList);
 var maxDate = Math.max(...dateList);
 
+var dates = [];
 // transform dates into screen
-var dateTransform = createTransform([minDate, maxDate],[0,600]);
+var dateTransform = createTransform([minDate, maxDate],[minWidth,maxWidth]);
 for (i = 0; i < dateList.length; i++) {
 	var dateSec = dateList[i].getTime();
 	var date = dateTransform(dateSec);
-	console.log(date)
+	dates.push(date)
 }
 
 // get canvas to draw line graph
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
+// draw y axis
+ctx.beginPath();
+ctx.moveTo(30,5);
+ctx.lineTo(30,280);
+ctx.stroke();
+// draw x axis
+ctx.moveTo(30,280);
+ctx.lineTo(570,280);
+ctx.stroke();
 
-
-
-
+// draw labels
+ctx.font = "10pt Verdana";
+ctx.fillText("Temperatures", 5, 10);
+ctx.fillText("Months", 25, 290)
 
 ctx.beginPath();
-ctx.moveTo(0,0);
+ctx.lineWidth = 1;
+ctx.strokeStyle = "black";
 
-for(i=0; i < dateList.length; i++)
+// draw ticks and labels on y axis
+for(i = -100; i <= 300; i +=50)
 {
-	ctx.lineTo(date[i],temperature[i]);
-	ctx.stroke();
+	var ticksTemp = tempTransform(i)
+	console.log(ticksTemp)
+
+	// draw tick mark of 10px
+	ctx.moveTo(30, ticksTemp)
+	ctx.lineTo(30 - 10, ticksTemp)
+
+	// draw text value at that point
+	ctx.font = "10pt Arial";
+	ctx.fillText(i, 2, ticksTemp)
 }
 
+
+// draw graph
+ctx.moveTo(dates[0],temperatures[0])
+for(i = 0; i < dates.length; i++)
+{
+	ctx.lineTo(dates[i],temperatures[i]);
+}
+ctx.stroke();
