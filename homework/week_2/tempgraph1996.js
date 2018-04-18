@@ -71,6 +71,7 @@ var maxTemp = Math.max(...tempList)
 var tempTransform = createTransform([minTemp,maxTemp],[0,300]);
 for (i = 0; i < tempList.length; i++) {
 	var temperature = tempTransform(tempList[i]);
+	console.log(temperature)
 }
 
 // get the min and max dates in milisec
@@ -82,18 +83,24 @@ var dateTransform = createTransform([minDate, maxDate],[0,600]);
 for (i = 0; i < dateList.length; i++) {
 	var dateSec = dateList[i].getTime();
 	var date = dateTransform(dateSec);
+	console.log(date)
 }
 
 // get canvas to draw line graph
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-// ctx.beginPath();
-// ctx.moveTo(0,0);
 
-// for(i=0; i < dateList.length; i++)
-// {
-// 	ctx.lineTo(date[i],temperature[i]);
-// 	ctx.stroke();
-// }
+
+
+
+
+ctx.beginPath();
+ctx.moveTo(0,0);
+
+for(i=0; i < dateList.length; i++)
+{
+	ctx.lineTo(date[i],temperature[i]);
+	ctx.stroke();
+}
 
