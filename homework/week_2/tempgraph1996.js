@@ -8,8 +8,11 @@
 * at the De Bilt weather station.
 */
 
+function reqListener ()
+{
+
 // get rawdata of average temperatures in 1996
-var data = document.getElementById('rawdata').value;
+var data = this.responseText;
 
 // create array with dates and temperatures; limit set on 366 days
 var dateTemp = data.split('\n', 366);
@@ -158,9 +161,12 @@ for(var i = minTempTick; i <= maxTempTick; i += nextTempTick) {
 	ctx.moveTo(50, ticksTemp)
 	ctx.lineTo(50 - 10, ticksTemp)
 
+	// convert temperatures from 0.1 celcius to celcius for labels
+	celcius = i/10
+
 	// draw text value at that point
 	ctx.font = "8pt Arial";
-	ctx.fillText(i, 20, ticksTemp + 3)
+	ctx.fillText(celcius, 20, ticksTemp + 3)
 }
 ctx.stroke();
 
@@ -193,15 +199,9 @@ for (var i = 0; i < months.length; i++) {
 }
 ctx.stroke();
 
-// get rawdata using XMLHttpRequest
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200)
-	{
-		document.getElementById('rawdata').innerHTML = xhttp.responseText;
-	}
-};
+}
 
-xhttp.open("GET", "temp1996.txt", true);
-xhttp.send();
-
+// var oReq = new XMLHttpRequest();
+// oReq.addEventListener("load", reqListener);
+// oReq.open("GET", "http://www.example.org/example.txt");
+// oReq.send();
