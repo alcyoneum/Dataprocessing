@@ -2,41 +2,38 @@
 * tempgraph1996.js
 *
 * Dataprocessing week 2
-* Shan Shan Huang
+* Shan Shan Huang (10768793)
 *
-* Creates a line graph of the average temperature in 1996
+* Creates a line graph of the average temperatures in 1996
 * at the De Bilt weather station.
 */
 
-function reqListener ()
-{
+// this function gets called when http request is completed
+function requestListener () {
+
 	// get rawdata of average temperatures in 1996
-	var data = this.responseText;
+	let data = this.responseText;
 
-	// create array with dates and temperatures; limit set on 366 days
-	var dateTemp = data.split('\n', 366);
+	// create array with dates and temperatures; limit set on 366 days (in 1996)
+	let dateTemp = data.split('\n', 366);
 
-	// make empty lists to store dates and temperatures seperately
-	var dateList = [];
-	var tempList = [];
+	let dateList = [];
+	let tempList = [];
 
-	// iterate over dates and temperatures
-	for (var i = 0; i < dateTemp.length; i++) {
+	// store Javascript dates and temperatures into seperate lists
+	for (let i = 0; i < dateTemp.length; i++) {
 
-		// split date and temperature
-		var dateTempList = dateTemp[i].split(',');
+		let dateTempList = dateTemp[i].split(',');
 
-		// format datestring (yyyymmdd) into ISO Date (yyyy-mm-dd)
-		var dateString = dateTempList[0];
-		var year = dateString.substring(0,4);
-		var month = dateString.substring(4,6);
-		var day = dateString.substring(6,8);
+		let dateString = dateTempList[0];
 
-		// store Javascript date into date list
-		var date = new Date(year + '-' + month + '-' + day);
+		// format datestring (yyyymmdd) into ISO date (yyyy-mm-dd)
+		let year = dateString.substring(0,4);
+		let month = dateString.substring(4,6);
+		let day = dateString.substring(6,8);
+		let date = new Date(year + '-' + month + '-' + day);
+
 		dateList.push(date);
-
-		// store temperature (Javascript numbers) into temperature list
 		tempList.push(Number(dateTempList[1]));
 	}
 
@@ -46,70 +43,65 @@ function reqListener ()
 	function createTransform(domain, range){
 
 		// domain: two-element array of the data bounds [domain_min, domain_max]
-	    var domain_min = domain[0];
-	    var domain_max = domain[1];
+	    let domain_min = domain[0];
+	    let domain_max = domain[1];
 
 	    // range: two-element array of the screen bounds [range_min, range_max]
-	    var range_min = range[0];
-	    var range_max = range[1];
+	    let range_min = range[0];
+	    let range_max = range[1];
 
 	    // formulas to calculate alpha and beta
-	   	var alpha = (range_max - range_min) / (domain_max - domain_min);
-	    var beta = range_max - alpha * domain_max;
+	   	let alpha = (range_max - range_min) / (domain_max - domain_min);
+	    let beta = range_max - alpha * domain_max;
 
 	    // returns the function for the linear transformation (y= a * x + b)
-	    return function(x){
+	    return function(x) {
 	      return alpha * x + beta;
 	    }
 	}
 
-	// get the lowest and highest temperatures in 1996
-	var minTemp = Math.min(...tempList);
-	var maxTemp = Math.max(...tempList);
+	// get lowest and highest temperatures in 1996
+	let minTemp = Math.min(...tempList);
+	let maxTemp = Math.max(...tempList);
 
-	// get the min and max dates in milisec
-	var minDate = Math.min(...dateList);
-	var maxDate = Math.max(...dateList);
+	// get min and max dates in milisec
+	let minDate = Math.min(...dateList);
+	let maxDate = Math.max(...dateList);
 
-	// min and max screen width and heights
-	var minWidth = 50;
-	var maxWidth = 550;
-	var minHeight = 50;
-	var maxHeight = 250;
+	// min and max screen width and height
+	let minWidth = 50;
+	let maxWidth = 550;
+	let minHeight = 50;
+	let maxHeight = 250;
 
-	// transform temperature data into screen coordinates
-	var temperatures = [];
-	var tempTransform = createTransform([maxTemp, minTemp],[minHeight,maxHeight]);
-	for (var i = 0; i < tempList.length; i++) {
-		var temperature = tempTransform(tempList[i]);
+	// transform temperatures into screen coordinates and store in new list
+	let temperatures = [];
+	let tempTransform = createTransform([maxTemp, minTemp],[minHeight,maxHeight]);
+	for (let i = 0; i < tempList.length; i++) {
+		let temperature = tempTransform(tempList[i]);
 
-		// store temperature coordinates in new list
-		temperatures.push(temperature)
+		temperatures.push(temperature);
 	}
 
-	// transform dates into screen coordinates
-	var dates = [];
-	var dateTransform = createTransform([minDate, maxDate],[minWidth,maxWidth]);
-	for (var i = 0; i < dateList.length; i++) {
-		var dateSec = dateList[i].getTime();
-		var date = dateTransform(dateSec);
+	// transform dates into screen coordinates and store in new list
+	let dates = [];
+	let dateTransform = createTransform([minDate, maxDate],[minWidth,maxWidth]);
+	for (let i = 0; i < dateList.length; i++) {
+		let dateSec = dateList[i].getTime();
+		let date = dateTransform(dateSec);
 
-		// store date coordinates in new list
-		dates.push(date)
+		dates.push(date);
 	}
 
-	// get canvas to draw line graph
-	var canvas = document.getElementById('myCanvas');
-	var ctx = canvas.getContext('2d');
+	let canvas = document.getElementById('myCanvas');
+	let ctx = canvas.getContext('2d');
 
 	// draw graph
 	ctx.beginPath();
 	ctx.lineWidth = 1;
 	ctx.strokeStyle='red';
 
-	// iterate over every date and temperature coordinate
-	for(var i = 0; i < dates.length; i++)
-	{
+	for(let i = 0; i < dates.length; i++) {
 		ctx.lineTo(dates[i],temperatures[i]);
 	}
 	ctx.stroke();
@@ -120,7 +112,7 @@ function reqListener ()
 
 	// draw x axis
 	ctx.beginPath();
-	ctx.strokeStyle='black'
+	ctx.strokeStyle='black';
 	ctx.moveTo(minWidth, maxHeight);
 	ctx.lineTo(maxWidth, maxHeight);
 	ctx.stroke();
@@ -131,9 +123,17 @@ function reqListener ()
 	ctx.lineTo(minWidth,maxHeight);
 	ctx.stroke();
 
+	// draw dashed line that shows freezing point (0 °C)
+	ctx.beginPath();
+	ctx.strokeStyle='grey';
+	ctx.setLineDash([5,10]);
+	ctx.moveTo(minWidth, tempTransform(0));
+	ctx.lineTo(maxWidth, tempTransform(0));
+	ctx.stroke();
+
 	// draw x-axis label: Dates in 1996 (months)
-	ctx.font = '12pt Verdana'
-	ctx.fillText('Dates in 1996 (months)', 200, 290)
+	ctx.font = '12pt Verdana';
+	ctx.fillText('Dates in 1996 (months)', 200, 290);
 
 	// draw rotated y-axis label: Temperature (°C)
 	ctx.save();
@@ -144,63 +144,65 @@ function reqListener ()
 	ctx.restore();
 
 	// set temperature values for ticks on the y-axis
-	var minTempTick = -100;
-	var maxTempTick = 300;
-	var nextTempTick = 50;
+	let minTempTick = -100;
+	let maxTempTick = 300;
+	let nextTempTick = 50;
 
-	// draw ticks and labels on y axis
+	// draw ticks and labels on y-axis
 	ctx.beginPath();
 	ctx.lineWidth = 2;
 
-	// iterate over every temperature tick on y-axis
-	for(var i = minTempTick; i <= maxTempTick; i += nextTempTick) {
-		var ticksTemp = tempTransform(i)
+	for(let i = minTempTick; i <= maxTempTick; i += nextTempTick) {
+		let ticksTemp = tempTransform(i)
 
 		// draw tick mark of length of 10px on y-axis
-		ctx.moveTo(50, ticksTemp)
-		ctx.lineTo(50 - 10, ticksTemp)
+		ctx.moveTo(50, ticksTemp);
+		ctx.lineTo(50 - 10, ticksTemp);
 
-		// convert temperatures from 0.1 celcius to celcius for labels
-		celcius = i/10
+		// convert temperatures from 0.1 celcius to celcius for tick labels
+		celcius = i/10;
 
 		// draw text value at that point
-		ctx.font = "8pt Arial";
-		ctx.fillText(celcius, 20, ticksTemp + 3)
+		ctx.font = '8pt Arial';
+		ctx.fillText(celcius, 20, ticksTemp + 3);
 	}
 	ctx.stroke();
-
-	// create list of month names
-	var months = ["jan", "feb", "mar", "apr", "may", "jun",
-				  "jul", "aug", "sept", "oct", "nov", "dec" ]
-	var monthTicks = []
 
 	// draw ticks and labels on x-axis
 	ctx.beginPath();
 	ctx.lineWidth = 2;
 
+	let monthTicks = [];
+
 	// iterate over days in 1996, increasing with 31days(1 month)
-	for (var i = 0; i <= 366; i+=31) {
-		var monthsec = dateList[i].getTime();
-		var monthTick = dateTransform(monthsec)
+	for (let i = 0; i <= 366; i+=31) {
+		let monthsec = dateList[i].getTime();
+		let monthTick = dateTransform(monthsec);
 
 		// store Tick coordinate of every month in a list
-		monthTicks.push(monthTick)
+		monthTicks.push(monthTick);
 
 		// draw tick mark of length 10px for every month on x-axis
-		ctx.moveTo(monthTick, 250)
-		ctx.lineTo(monthTick, 250 + 10)
+		ctx.moveTo(monthTick, 250);
+		ctx.lineTo(monthTick, 250 + 10);
 	}
 
-	// draw month labels on x axis
-	for (var i = 0; i < months.length; i++) {
-		ctx.font = "8pt Arial";
-		ctx.fillText(months[i], monthTicks[i] - 5,270)
+	let months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.',
+				  'Jul.', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+
+	// draw month labels on x-axis
+	for (let i = 0; i < months.length; i++) {
+		ctx.font = '8pt Arial';
+		ctx.fillText(months[i], monthTicks[i] - 5,270);
 	}
 	ctx.stroke();
 
 }
 
-var oReq = new XMLHttpRequest();
-oReq.addEventListener("load", reqListener);
-oReq.open("GET", "https://raw.githubusercontent.com/alcyoneum/Dataprocessing/master/homework/week_2/tempdata1996.csv");
-oReq.send();
+// send HTTP request
+let request = new XMLHttpRequest();
+request.addEventListener('load', requestListener);
+let URL = 'https://raw.githubusercontent.com/alcyoneum/Dataprocessing/master/homework/week_2/tempdata1996.csv';
+request.open('GET', URL);
+request.send();
+
