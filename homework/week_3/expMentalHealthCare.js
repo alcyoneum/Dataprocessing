@@ -20,9 +20,6 @@ d3.json("expenses_mentalcare.json", function(error, data) {
 d3.select("head").append("title")
 				 .text("Mental health care expenses");
 
-d3.select("body").append("h2")
-				 .text("Mental health care expenses (2001-2016)");
-
 d3.select("body").append("p")
 			     .style("font-size", "16px")
 			     .text("Shan Shan Huang (10768793)")
@@ -38,7 +35,10 @@ d3.select("body").append("p")
 
 				 .append("p")
 				 .text("Source: Centraal Bureau voor de Statistiek \
-				 	   (Gezondheid, leefstijl, zorggebruik)");
+				 	   (Gezondheid, leefstijl, zorggebruik)")
+
+				 .append("h2")
+				 .text("Mental health care expenses (2001-2016)");
 
 
 /**
@@ -110,7 +110,7 @@ rects.attr("height", function(d, i) {return h - yScale(d.expenses) - 2 * margin}
 // draw x axis
 let drawX = svg.append("g")
 			   .attr("class", "axis")
-			   .attr("transform", "translate(" + margin + "," + (h - margin+ ")"))
+			   .attr("transform", "translate(" + margin + "," + (h - margin + ")"))
 			   .call(xAxis);
 
 // draw tick labels of x axis (source: bl.ocks.org/phoebebright/3061203)
