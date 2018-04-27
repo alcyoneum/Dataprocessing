@@ -20,7 +20,7 @@ d3.json("expenses_mentalcare.json", function(error, data) {
 d3.select("head").append("title")
 				 .text("Mental health care expenses");
 
-d3.select.("body").append("h2")
+d3.select("body").append("h2")
 				  .text("Mental health care expenses (2001-2016)");
 
 d3.select("body").append("p")
