@@ -119,8 +119,8 @@ drawX.selectAll("text")
      .attr("dx", "2em")
      .attr("dy", "2em")
      .attr("transform", function(d) { return "translate(" + 
-   									this.getBBox().height * -2 + "," +
-   									this.getBBox().height + ")rotate(-45)"});
+   	                                  this.getBBox().height * -2 + "," +
+                                      this.getBBox().height + ")rotate(-45)"});
 
 // draw label for x axis
 drawX.append("text")
