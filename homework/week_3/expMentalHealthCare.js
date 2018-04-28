@@ -18,27 +18,27 @@ d3.json("expenses_mentalcare.json", function(error, data) {
 
 // add text elements with info for bar chart using D3
 d3.select("head").append("title")
-				 .text("Mental health care expenses");
+                 .text("Mental health care expenses");
 
 d3.select("body").append("h2")
-				  .text("Mental health care expenses (2001-2016)");
+                 .text("Mental health care expenses (2001-2016)");
 
 d3.select("body").append("p")
-			     .style("font-size", "16px")
-			     .text("Shan Shan Huang (10768793)")
+                 .style("font-size", "16px")
+                 .text("Shan Shan Huang (10768793)")
 
-				 .append("p")
-				 .style("color","grey")
-				 .text("This bar chart shows the expenses (in billion euros) for \
-				 	   mental health care from 2001-2016 in the Netherlands.")
+                 .append("p")
+                 .style("color","grey")
+                 .text("This bar chart shows the expenses (in billion euros) for \
+                        mental health care from 2001-2016 in the Netherlands.")
 
-				 .append("p")
+                 .append("p")
 				 .text("In the last 15 years the amount of money for mental \
-				 	health care has doubled.")
+                       health care has doubled.")
 
-				 .append("p")
-				 .text("Source: Centraal Bureau voor de Statistiek \
-				 	   (Gezondheid, leefstijl, zorggebruik)");
+                 .append("p")
+                 .text("Source: Centraal Bureau voor de Statistiek \
+                       (Gezondheid, leefstijl, zorggebruik)");
 
 
 /**
@@ -55,14 +55,14 @@ const n = dataset.data.length;
 
 // get svg element
 let svg = d3.select("body")
-			.append("svg")
-			.attr("width", w)
-			.attr("height", h);
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
 
 // get tooltip
 tip = d3.tip().attr('class', 'd3-tip')
- 			  .html(function(d) {
- 			  	return "€ " + d.expenses + " billion"; });
+              .html(function(d) {
+                      return "€ " + d.expenses + " billion"; });
 svg.call(tip);
 
 // minimum and maximum datapoints
@@ -72,46 +72,46 @@ const max_expenses = d3.max(dataset.data, function(d) {return d.expenses});
 
 // formulas to scale data
 let xScale = d3.scale.linear()
-					 .domain([min_year, max_year])
-					 .range([0, w - 2 * margin - 3 * barPadding]);
+                     .domain([min_year, max_year])
+                     .range([0, w - 2 * margin - 3 * barPadding]);
 
 let yScale = d3.scale.linear()
-			   		 .domain([max_expenses, 0])
-			   		 .range([0, h -  2 * margin]);
+                     .domain([max_expenses, 0])
+                     .range([0, h -  2 * margin]);
 
 // get x axis
 let xAxis = d3.svg.axis()
-				   .scale(xScale)
-				   .orient("bottom")
-				   .ticks(n)
-				   .tickFormat(d3.format(""));
+                  .scale(xScale)
+                  .orient("bottom")
+                  .ticks(n)
+                  .tickFormat(d3.format(""));
 
 // get y axis
 let yAxis = d3.svg.axis()
-				  .scale(yScale)
-				  .orient("left")
-				  .ticks(n);
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(n);
 
 // get rectangles
 let rects = svg.selectAll("rect")
-			   .data(dataset.data)
-			   .enter()
-			   .append("rect")
-			   .attr("class", "bar")
-			   .on('mouseover', tip.show)
-			   .on('mouseout', tip.hide);
+               .data(dataset.data)
+               .enter()
+               .append("rect")
+               .attr("class", "bar")
+               .on('mouseover', tip.show)
+               .on('mouseout', tip.hide);
 
 // draw rectangles using the data
 rects.attr("height", function(d, i) {return h - yScale(d.expenses) - 2 * margin})
-	 .attr("width", w / n - barPadding)
-	 .attr("x", function(d, i) {return (i * ((w - 2 * margin) / n) + margin)})
-	 .attr("y", function(d) {return h - (h - yScale(d.expenses)) + margin});
+     .attr("width", w / n - barPadding)
+     .attr("x", function(d, i) {return (i * ((w - 2 * margin) / n) + margin)})
+     .attr("y", function(d) {return h - (h - yScale(d.expenses)) + margin});
 
 // draw x axis
 let drawX = svg.append("g")
-			   .attr("class", "axis")
-			   .attr("transform", "translate(" + margin + "," + (h - margin + ")"))
-			   .call(xAxis);
+               .attr("class", "axis")
+               .attr("transform", "translate(" + margin + "," + (h - margin + ")"))
+               .call(xAxis);
 
 // draw tick labels of x axis (source: bl.ocks.org/phoebebright/3061203)
 drawX.selectAll("text")
@@ -133,9 +133,9 @@ drawX.append("text")
 
 // draw y axis
 let drawY = svg.append("g")
-			   .attr("class", "axis")
-			   .attr("transform", "translate (" + margin + ", " + margin + ")")
-			   .call(yAxis);
+               .attr("class", "axis")
+               .attr("transform", "translate (" + margin + ", " + margin + ")")
+               .call(yAxis);
 
 // draw label of y axis
 drawY.append("text")
