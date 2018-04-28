@@ -33,7 +33,7 @@ d3.select("body").append("p")
                         mental health care from 2001-2016 in the Netherlands.")
 
                  .append("p")
-				 .text("In the last 15 years the amount of money for mental \
+                 .text("In the last 15 years the amount of money for mental \
                        health care has doubled.")
 
                  .append("p")
