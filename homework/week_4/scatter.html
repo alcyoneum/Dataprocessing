@@ -1,0 +1,50 @@
+<!-- Scatter.html
+<! 
+<! Dataprocessing, week 3
+<! Shan Shan Huang (10768793)
+<! 
+<! Scatterplot
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title> Scatterplot </title>
+	<link rel="stylesheet" type="text/css" href="scatter.css" >
+	<script type="text/javascript" src="d3/d3v4.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script src="scatter.js"></script>
+
+</head>
+<body>
+
+	<h1> Scatter plot: Life satisfaction and personal earnings </h1>
+
+	<p> Shan Shan Huang (10768793) </p>
+
+	<p> Source: OECD.stat, Better Life Index </p>
+
+	<div class="btn-group pull-right">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+				 year <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+<!-- 			<li><a class="yearButton" value="2016" onclick="
+			makeScatter(global2016);" href="#"> 2016 </a></li>
+			<li><a class="yearButton" value="2015" onclick="makeScatter(global2015)" href="#"> 2015 </a></li> -->
+			<li><a class="yearButton" value="global2016" href="#"> 2016 </a></li>
+			<li><a class="yearButton" value="global2015" href="#"> 2015 </a></li>
+		</ul>
+	</div>
+
+</body>
+</html>
