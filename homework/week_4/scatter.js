@@ -46,11 +46,13 @@ function getData() {
 	  	{
 			var dataset = []
 
-			n = (Object.keys(LS_data.dataSets[0].observations).length) / 2
-		
-	 		for (let i = 0; i < n ; i++) {
+			var nGender = LS_data.structure.dimensions.observation[3].values.length
 
-	 			for (let j = 0; j < 2; j++)
+			var nDatapoints = (Object.keys(LS_data.dataSets[0].observations).length) / 2
+
+	 		for (let i = 0; i < nDatapoints ; i++) {
+
+	 			for (let j = 0; j < nGender; j++)
 	 			{
 	 				datapoint = []
 	 				// life satisfaction
@@ -144,7 +146,7 @@ function makeScatter(dataset) {
 	                 .enter()
 	                 .append("circle")
 
-	var colors = ["lightblue", "hotpink"]
+	var colors = ["deepSkyBlue", "hotpink"]
 
 	circles.attr("cx", function(d) {return xScale(d[0])})
 		   .attr("cy", function(d) {return yScale(d[1])})
@@ -179,7 +181,7 @@ function makeScatter(dataset) {
 		      .attr("dy", ".35em")
 		      .style("text-anchor", "end")
 		      .text(function(d) {
-		      	if (d == "lightblue")
+		      	if (d == "deepSkyBlue")
 		      		return "male"
 		      	else
 		      		return "female"
@@ -207,10 +209,23 @@ function makeScatter(dataset) {
 
 		circles.attr("class", "update")
 
+		const minLS = d3.min(dataset, function(d) {return d[0]});
+		const maxLS = d3.max(dataset, function(d) {return d[0]});
+		const minPE = d3.min(dataset, function(d) {return d[1]})
+		const maxPE = d3.max(dataset, function(d) {return d[1]})
+
+		var xxScale = d3.scaleLinear()
+	                  .domain([minLS, maxLS])
+	                  .range([padding * 2, w - padding * 10]);
+
+		var yyScale = d3.scaleLinear()
+	                   .domain([minPE, maxPE])
+	                   .range([h - padding, 0]);
+
 		circles.enter().append("circle")
 		       .attr("class", "enter")
-		       .attr("cx", function(d) {return xScale(d[0])})
-			   .attr("cy", function(d) {return yScale(d[1])})
+		       .attr("cx", function(d) {return xxScale(d[0])})
+			   .attr("cy", function(d) {return yyScale(d[1])})
 			   .attr("r", 3)
 			   .attr("class", "dot")
 		       .attr("fill", function(d) {
