@@ -204,9 +204,7 @@ function getMap() {
         // when clicked on map: makes a new bar chart
         done: function(datamap) {
             datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
-                makeBarChart(indicatorData[geography.properties.name])
-                var name = d3.select("h3")
-                name.append("text").text(geography.properties.name)
+                update(indicatorData[geography.properties.name])
             });
         },
 
@@ -250,4 +248,48 @@ function getMap() {
         // mapData: country, life satisfaction, fill key
         data: mapData
     })
+}
+
+/** updates bar chart according to country clicked on.
+*   Does not work yet!! ): So I am making a new bar chart every time for now.
+* */
+function update(dataset) {
+
+    
+    makeBarChart(dataset)  
+
+    // // define size and margins
+    // const margin = 50;
+    // const w = 400 - 2 * margin;
+    // const h = 300 - 2 * margin;
+    // const padding = 10;
+    // const n = dataset.length;
+
+    // // formulas to scale data
+    // let yScale = d3.scale.linear()
+    //                .domain([0, 100])
+    //                .range([h, 0]);
+
+    // let xScale = d3.scale.linear()
+    //                .domain([0, n])
+    //                .range([0, w]);
+
+    // var svg = d3.select("svg")
+    
+    //  // join new data with old elements and update old when needed
+    // let rects = svg.selectAll("rect")
+    //                .data(dataset, function(d) {return d})
+    //                .attr("class", "update");
+
+    // rects.enter()
+    //      .append("rect")
+    //      .attr("class", "enter")
+    //      .attr("height", function(d, i) {return h - yScale(d)})
+    //      .attr("width", w / 3 - padding)
+    //      .attr("x", function(d, i) {return ((i * w) / n) + padding})
+    //      .attr("y", function(d) {return h - (h - yScale(d))})
+    //      .attr("class", "bar")
+    //      .merge(rects);
+
+    // rects.exit().remove();        
 }
