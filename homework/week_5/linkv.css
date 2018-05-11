@@ -1,0 +1,63 @@
+/* linkv.css
+*
+*  Dataprocessing, week 5
+*  Shan Shan Huang (10768793)
+* 
+*  D3 Linked Views
+*  Style for a map of Europe with countries and its life satisfaction score.
+*  When clicked on a country, it updates the bar chart with life satisfaction
+*  indicators such as employment rate, educational attainment, and safety
+*  feeling when walking home.
+*/
+
+/* axis for bar chart */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+/* colors for rectangles in bar chart */
+.bar:hover {
+    fill: orangered;
+}
+
+.bar {
+    fill: orange;
+}
+
+/* d3 tool tip (source: http://bl.ocks.org/Caged/6476579) */
+.d3-tip {
+    line-height: 1;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips specifically */
+.d3-tip.n:after {
+    margin: -2px 0 0 0;
+    top: 100%;
+    left: 0;
+}
