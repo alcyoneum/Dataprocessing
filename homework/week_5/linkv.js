@@ -19,10 +19,10 @@ window.onload = function() {
 function getData() {
 
     // life satisfaction, employment rate, educational atainment, safety feeling
-    var LifeS = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+GBR.SW_LIFS.L.TOT/all?&dimensionAtObservation=allDimensions";
-    var EmpR = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+GBR.JE_EMPL.L.TOT/all?&dimensionAtObservation=allDimensions";
-    var EduA = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+GBR.ES_EDUA.L.TOT/all?&dimensionAtObservation=allDimensions";
-    var SaF = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+GBR.PS_FSAFEN.L.TOT/all?&dimensionAtObservation=allDimensions";
+    var LifeS = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.SW_LIFS.L.TOT/all?&dimensionAtObservation=allDimensions";
+    var EmpR = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.JE_EMPL.L.TOT/all?&dimensionAtObservation=allDimensions";
+    var EduA = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.ES_EDUA.L.TOT/all?&dimensionAtObservation=allDimensions";
+    var SaF = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LVA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.PS_FSAFEN.L.TOT/all?&dimensionAtObservation=allDimensions";
 
     // parse data when GET request fulfilled
     d3.queue()
@@ -78,8 +78,8 @@ function parseData(error, response) {
     }
 
     makeBarChart(indicatorData.Netherlands);
-    getMap();
 }
+
 
 
 /** Draws bar chart with life satisfaction indicators. */
@@ -170,126 +170,109 @@ function makeBarChart(dataset) {
          .attr("y", function(d) {return h - (h - yScale(d))})
          .on('mouseover', tool_tip.show)
          .on('mouseout', tool_tip.hide);
-}
 
-/** loads a map zoomed in on Europe. */
-function getMap() {
+    getMap();
 
-    // formula for assigning class(low, middle, high) to life satisfaction score
-    let cScale = function(LS) {
-        if (LS < 6) {
-            return "lowLS"
-        }
-        else if (LS >= 6 && LS < 7) {
-            return "middleLS"
-        }
-        else {
-            return "highLS"
-        }
-    }
+    /** loads a map zoomed in on Europe. */
+    function getMap() {
 
-    // converts data into correct format for the map
-    var mapData = {};
-    for (let i = 0; i < 25; i ++) {
-        mapData[countries[i][1]] = {"country" : countries[i][0],
-                                    "lifeSatisfaction" : countries[i][2],
-                                    "fillKey" : cScale(countries[i][2])}
-    }
-
-    // draws map according data
-    var map = new Datamap({
-        element: document.getElementById("container"),
-        fills: {defaultFill: "black"},
-
-        // when clicked on map: makes a new bar chart
-        done: function(datamap) {
-            datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
-                update(indicatorData[geography.properties.name])
-            });
-        },
-
-        // zoom in on Europe
-        setProjection: function(element) {
-        var projection = d3.geo.equirectangular()
-            .center([13, 52])
-            .rotate([4.4, 0])
-            .scale(500)
-            .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
-        var path = d3.geo.path()
-                         .projection(projection);
-        return {path: path, projection: projection};
-        },
-
-        // geography configuration 
-        geographyConfig: {
-            borderColor: 'white',
-            popupOnHover: true,
-            highlightOnHover: true,
-            highlightFillColor: "orange",
-            highlightBorderColor: "white",
-            highlightBorderWidth: 1.5,
-            highlightBorderOpacity: 1,
-
-            // shows pop-up when hovered over country
-            popupTemplate: function(geography, data) {
-                return "<div class=hoverinfo> \
-                        <strong>" + data.country + "</strong><br/> \
-                        Life Satisfaction:<br/>" + data.lifeSatisfaction + "</div>"
+        // formula for assigning class(low, middle, high) to life satisfaction score
+        let cScale = function(LS) {
+            if (LS < 6) {
+                return "lowLS"
             }
-        },
+            else if (LS >= 6 && LS < 7) {
+                return "middleLS"
+            }
+            else {
+                return "highLS"
+            }
+        }
 
-        // colors country according to life satisfaction (dark = more satisfied)
-        fills: {
-            lowLS: '#fee8c8',
-            middleLS: '#fdbb84',
-            highLS: '#e34a33'
-        },
+        // converts data into correct format for the map
+        var mapData = {};
+        let n = countries.length;
 
-        // mapData: country, life satisfaction, fill key
-        data: mapData
-    })
-}
+        for (let i = 0; i < n; i ++) {
+            mapData[countries[i][1]] = {"country" : countries[i][0],
+                                        "lifeSatisfaction" : countries[i][2],
+                                        "fillKey" : cScale(countries[i][2])}
+        }
 
-/** updates bar chart according to country clicked on.
-*   Does not work yet!! ): So I am making a new bar chart every time for now.
-* */
-function update(dataset) {
+        // draws map according data
+        var map = new Datamap({
+            element: document.getElementById("container"),
+            fills: {defaultFill: "black"},
 
-    
-    makeBarChart(dataset)  
+            // when clicked on map: update bar chart
+            done: function(datamap) {
+                datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+                    update(indicatorData[geography.properties.name])
+                });
+            },
 
-    // // define size and margins
-    // const margin = 50;
-    // const w = 400 - 2 * margin;
-    // const h = 300 - 2 * margin;
-    // const padding = 10;
-    // const n = dataset.length;
+            // zoom in on Europe
+            setProjection: function(element) {
+            var projection = d3.geo.equirectangular()
+                .center([13, 52])
+                .rotate([4.4, 0])
+                .scale(500)
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+            var path = d3.geo.path()
+                             .projection(projection);
+            return {path: path, projection: projection};
+            },
 
-    // // formulas to scale data
-    // let yScale = d3.scale.linear()
-    //                .domain([0, 100])
-    //                .range([h, 0]);
+            // geography configuration 
+            geographyConfig: {
+                borderColor: 'white',
+                popupOnHover: true,
+                highlightOnHover: true,
+                highlightFillColor: "orange",
+                highlightBorderColor: "white",
+                highlightBorderWidth: 1.5,
+                highlightBorderOpacity: 1,
 
-    // let xScale = d3.scale.linear()
-    //                .domain([0, n])
-    //                .range([0, w]);
+                // shows pop-up when hovered over country
+                popupTemplate: function(geography, data) {
+                    return "<div class=hoverinfo> \
+                            <strong>" + data.country + "</strong><br/> \
+                            Life Satisfaction:<br/>" + data.lifeSatisfaction + "</div>"
+                }
+            },
 
-    // var svg = d3.select("svg")
-    
-    //  // join new data with old elements and update old when needed
-    // let rects = svg.selectAll("rect")
-    //                .data(dataset, function(d) {return d})
-    //                .attr("class", "update");
+            // colors country according to life satisfaction (dark = more satisfied)
+            fills: {
+                lowLS: '#fee8c8',
+                middleLS: '#fdbb84',
+                highLS: '#e34a33'
+            },
 
-    // rects.enter()
-    //      .append("rect")
-    //      .attr("class", "enter")
-    //      .attr("height", function(d, i) {return h - yScale(d)})
-    //      .attr("width", w / 3 - padding)
-    //      .attr("x", function(d, i) {return ((i * w) / n) + padding})
-    //      .attr("y", function(d) {return h - (h - yScale(d))})
-    //      .attr("class", "bar")
-    //      .merge(rects);
+            // mapData: country, life satisfaction, fill key
+            data: mapData
+        })
+    }
 
-    // rects.exit().remove();        
+    /** Updates bar chart according to country clicked on.
+    *   Not finished yet! Error handling when clicked on country without data?
+    * */
+    function update(dataset) {
+
+        // select rectangles of bar chart
+        var rects = svg.selectAll("rect")
+                       .data(dataset);
+
+        // enter
+        rects.enter().append("rect");
+
+        // update
+        rects.attr("height", function(d, i) {return h - yScale(d)})
+             .attr("width", w / 3 - padding)
+             .attr("x", function(d, i) {return ((i * w) / n) + padding})
+             .attr("y", function(d) {return h - (h - yScale(d))})
+             .attr("class", "bar");
+        
+        // exit
+        rects.exit().remove();
+    }
 }
