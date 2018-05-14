@@ -14,22 +14,23 @@
 .axis path,
 .axis line {
     fill: none;
-    stroke: black;
+    stroke: black; 
     shape-rendering: crispEdges;
 }
 
 .axis text {
     font-family: sans-serif;
-    font-size: 11px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 /* colors for rectangles in bar chart */
 .bar:hover {
-    fill: orangered;
+    fill: #1ab2ff;
 }
 
 .bar {
-    fill: orange;
+    fill: #88cc00;
 }
 
 /* d3 tool tip (source: http://bl.ocks.org/Caged/6476579) */

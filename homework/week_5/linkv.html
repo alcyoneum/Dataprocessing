@@ -11,7 +11,7 @@
 -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
     <title> Linked views </title>
@@ -23,7 +23,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 
     <!-- loads d3 tooltip -->
-    <script type="text/javascript" src="d3/d3tip.js"></script>
+    <script src="d3/d3tip.js"></script>
 
     <!-- loads libraries not included in d3v3: queue, requests, etc. -->
     <script src="https://d3js.org/d3-collection.v1.min.js"></script>
@@ -37,14 +37,45 @@
     <script src="datamaps.world.min.js"></script>
     <script src="linkv.js"></script>
 
+    <!-- bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
 
-    <h1> Linked views </h1>
-    <p> Shan Shan Huang (10768793) </p>
+    <div class="jumbotron text-center">
+        <h1> Linked views </h1>
+        <p> Shan Shan Huang (10768793) </p>
+    </div>
 
-    <!-- container for world map -->
-    <div id="container" style="position: relative; width: 500px; height: 400px;"></div>
+
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- container for world map -->
+            <div class="col-sm-6" style="background-color:lightblue">
+
+                <div class="btn-group">
+                    <button type="button" class="yo" value="global2016">2016</button>
+                    <button type="button" class="btn btn-primary" value="global2015">2015</button>
+                    <button type="button" class="btn btn-primary">Sony</button>
+                </div>
+
+                <div id="container" style="position: relative; width: 500px; height: 400px;"></div>
+
+            </div>
+
+            <!-- container for bar chart -->
+            <div class="col-sm-6" id = "barchart"> </div>
+
+        </div>
+
+    </div>
 
 </html>
