@@ -1,0 +1,94 @@
+<!-- index.html
+<! 
+<! Dataprocessing, week 5
+<! Shan Shan Huang (10768793)
+<! 
+<!  D3 Linked views
+<!  Shows a map of Europe with countries and its life satisfaction score.
+<!  When clicked on a country, it updates the bar chart with life satisfaction
+<!  indicators such as employment rate, educational attainment, and safety
+<!  feeling when walking home.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title> Linked views </title>
+
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="linkv.css" >
+
+    <!-- loads d3v3 -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+
+    <!-- loads d3 tooltip -->
+    <script src="d3/d3tip.js"></script>
+
+    <!-- loads libraries not included in d3v3: queue, requests, etc. -->
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-request.v1.min.js"></script>
+    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+
+    <!-- loads world map -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="datamaps.world.min.js"></script>
+    <script src="linkv.js"></script>
+
+    <!-- bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- navigtion bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">`Linked Views</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="index.html"> visualization </a></li>
+          <li><a href="story.html"> story </a></li>
+          <li><a href="designchoice.html"> design choice </a></li>
+          <li><a href="source.html"> source </a></li>
+        </ul>
+      </div>
+    </nav>
+    
+
+    <div class="jumbotron text-center">
+        <h1> Linked views </h1>
+        <p> Shan Shan Huang (10768793) </p>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-6" style="background-color:lightblue">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success" value="lifesat"> life satisfaction</button>
+                    <button type="button" class="btn btn-success" value="lifeexp">life expectancy</button>
+                </div>
+
+                <!-- container for world map -->
+                <div id="worldmap" style="position: relative; width: 550px; height: 400px;"></div>
+
+            </div>
+
+            <!-- container for bar chart -->
+            <div class="col-sm-6" id="barchart"> </div>
+
+        </div>
+
+    </div>
+
+</html>
