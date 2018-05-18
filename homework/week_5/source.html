@@ -4,7 +4,7 @@
 <! Shan Shan Huang (10768793)
 <! 
 <!  D3 Linked views
-<!  TSource used for dataset
+<!  Source used for linked views
 -->
 
 <!DOCTYPE html>
@@ -19,33 +19,57 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="linkv.css">
+
 </head>
 
 <body>
 
+    <!-- navigation bar -->
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">`Linked Views</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li><a href="index.html"> visualization </a></li>
-          <li><a href="story.html"> story </a></li>
-          <li><a href="designchoice.html"> design choice </a></li>
-          <li class="active"><a href="source.html"> source </a></li>
-        </ul>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">`Linked Views</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html"> Visualization </a></li>
+                <li><a href="story.html"> Story </a></li>
+                <li><a href="designchoice.html"> Design </a></li>
+                <li class="active"><a href="source.html"> Source </a></li>
+            </ul>
       </div>
     </nav>
     
-
+    <!-- page header -->
     <div class="jumbotron text-center">
-        <h1> Linked views </h1>
-        <p> Shan Shan Huang (10768793) </p>
+        <h1> Better Life Index </h1>
+        <h2> Minor Progammeren (UvA) - DataProcessing </h2>
+        <h2> Shan Shan Huang (10768793) </h2>
+        <p> An interactive map that allows you to compare well-being across countries in Europe </p>
     </div>
 
-    <p> Better Life Index 2016 </p>
-    <p> Source: <a href="http://stats.oecd.org/viewhtml.aspx?datasetcode=BLI2016&lang=en#"> OECD: Better Life Index (2016) </a> </p>
+    <div class="row">
 
+        <!-- Picture minor programming -->
+        <div class="col-sm-3">
+            <div class="thumbnail">
+                <img src="https://static1.squarespace.com/static/52851c02e4b0b817d0c63bc6/t/56600e66e4b0e7cb6361bbca/1525289444898/" alt="minor programming" style="width:500px;height:300px">
+            </div>
+        </div>
 
+        <!-- Sources used -->
+        <div class="col-sm-9">
+            <p> Source dataset: <a href="http://stats.oecd.org/viewhtml.aspx?datasetcode=BLI2016&lang=en#"> OECD: Better Life Index (2016) </a> </p>
+            <p> Source picture: <a href="http://quoteforinsuronline.com/wp-content/uploads/2017/01/Good-Idea-for-a-Better-Life-Ahead.jpg"> story </a> </p>
+            <p> Source picture:
+                <a href="https://www.itm.edu/wp-content/uploads/2018/02/man-doubting-about-the-direction_1133-21.jpg"> design choice </a>
+            </p>
+            <p> Source picture:
+                <a href="https://static1.squarespace.com/static/52851c02e4b0b817d0c63bc6/t/56600e66e4b0e7cb6361bbca/1525289444898/"> minor programming </a>
+            </p>
+        </div>
+    </div>
 
+</body>
 </html>

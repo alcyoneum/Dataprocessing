@@ -6,7 +6,7 @@
 *  D3 Linked views
 *  Shows a map of Europe with countries and its life satisfaction score or
 *  life expectancy in years. When clicked on a country, it updates the bar chart
-*  with indicators such as employment rate, educational attainment,
+*  with three indicators: employment rate, educational attainment,
 *  and self reported health.
 */
 
@@ -14,14 +14,15 @@ window.onload = function() {
     getData();
 }
 
+
 /** Retrieve data through API. */
 function getData() {
 
-    let lifeSat = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.SW_LIFS.L.TOT/all?&dimensionAtObservation=allDimensions";
-    let empRate = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.JE_EMPL.L.TOT/all?&dimensionAtObservation=allDimensions";
-    let eduAtt = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.ES_EDUA.L.TOT/all?&dimensionAtObservation=allDimensions";
-    let selfHealth = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.HS_SFRH.L.TOT/all?&dimensionAtObservation=allDimensions";
-    let lifeExp = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.HS_LEB.L.TOT/all?&dimensionAtObservation=allDimensions";
+    const lifeSat = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.SW_LIFS.L.TOT/all?&dimensionAtObservation=allDimensions";
+    const empRate = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.JE_EMPL.L.TOT/all?&dimensionAtObservation=allDimensions";
+    const eduAtt = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.ES_EDUA.L.TOT/all?&dimensionAtObservation=allDimensions";
+    const selfHealth = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.HS_SFRH.L.TOT/all?&dimensionAtObservation=allDimensions";
+    const lifeExp = "https://stats.oecd.org/SDMX-JSON/data/BLI2016/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+LUX+NLD+NOR+POL+PRT+SVN+ESP+SWE+CHE+GBR.HS_LEB.L.TOT/all?&dimensionAtObservation=allDimensions";
 
     // parse data when GET request fulfilled
     d3.queue()
@@ -33,7 +34,10 @@ function getData() {
       .awaitAll(parseData);
 }
 
-var countries = [];
+// list: [country, country code, life satisfaction, life expectancy]
+var mapData = [];
+
+// object: {Country: [employment rate, educ. attainment, self-rep health]}
 var indicatorData = {};
 
 
@@ -42,13 +46,13 @@ function parseData(error, response) {
 
     if (error) throw error;
 
-    var lifeSatData = JSON.parse(response[0].responseText);
-    var empRateData = JSON.parse(response[1].responseText);
-    var eduAttData = JSON.parse(response[2].responseText);
-    var selfHealthData = JSON.parse(response[3].responseText);
-    var lifeExpData = JSON.parse(response[4].responseText);
+    const lifeSatData = JSON.parse(response[0].responseText);
+    const empRateData = JSON.parse(response[1].responseText);
+    const eduAttData = JSON.parse(response[2].responseText);
+    const selfHealthData = JSON.parse(response[3].responseText);
+    const lifeExpData = JSON.parse(response[4].responseText);
 
-    var nData = Object.keys(lifeSatData.dataSets[0].observations).length;
+    let nData = Object.keys(lifeSatData.dataSets[0].observations).length;
 
     // iterate over every country in dataset
     for (let i = 0; i < nData; i++) {
@@ -56,60 +60,65 @@ function parseData(error, response) {
         indicator = [];
         country = [];
 
-        // country: name, code, life satisfaction
-        let countryName = lifeSatData.structure.dimensions.observation[0].values[i].name;
-        let countryCode = lifeSatData.structure.dimensions.observation[0].values[i].id;
-        let countryLS = lifeSatData.dataSets[0].observations[i + ":0:0:0"][0];
-        let countryLE = lifeExpData.dataSets[0].observations[i + ":0:0:0"][0];
+        const indexData = i + ":0:0:0";
+
+        // country: name, code, life satisfaction, life expectancy
+        let countryName = lifeSatData.structure.dimensions.observation[0]
+                          .values[i].name;
+        let countryCode = lifeSatData.structure.dimensions.observation[0]
+                          .values[i].id;
+        let countryLS = lifeSatData.dataSets[0].observations[indexData][0];
+        let countryLE = lifeExpData.dataSets[0].observations[indexData][0];
 
         country.push(countryName);
         country.push(countryCode);
         country.push(countryLS);
         country.push(countryLE);
 
-        // LS indicators: employment rate, educational attainment, safety
-        let ER = empRateData.dataSets[0].observations[i + ":0:0:0"][0];
-        let EA = eduAttData.dataSets[0].observations[i + ":0:0:0"][0];
-        let SF = selfHealthData.dataSets[0].observations[i + ":0:0:0"][0];
+        // indicators: employment rate, educational attainment, rep. health
+        let empRate = empRateData.dataSets[0].observations[indexData][0];
+        let eduAtt = eduAttData.dataSets[0].observations[indexData][0];
+        let selfHealth = selfHealthData.dataSets[0].observations[indexData][0];
 
-        indicator.push(ER);
-        indicator.push(EA);
-        indicator.push(SF);
+        indicator.push(empRate);
+        indicator.push(eduAtt);
+        indicator.push(selfHealth);
 
-        countries.push(country);
-        indicatorData[countryName] = indicator
+        mapData.push(country);
+        indicatorData[countryName] = indicator;
 
     }
-
     makeBarChart(indicatorData.Netherlands);
 }
 
 
-/** Draws bar chart with life satisfaction indicators. */
-function makeBarChart(dataset) {
+/** Draws bar chart with well-being indicators. */
+function makeBarChart(indicatorData) {
 
-    let countryName = d3.select("#barchart")
-                        .append("h3")
-                        .attr("id", "countryName")
-                        .text("Netherlands")
-    
-    // define size and margins
+    // name of the country shown in bar chart
+    let countryName = d3.select("#countryName")
+                        .append("text")
+                        .attr("id", "newName")
+                        .text("Netherlands");
+
+    // define sizes and margins
     const margin = 50;
-    const w = 450 - 2 * margin;
-    const h = 380 - 2 * margin;
+    const w = 550 - 2 * margin;
+    const h = 450 - 2 * margin;
     const padding = 10;
-    const n = dataset.length;
+    const n = indicatorData.length;
 
-    // formulas to scale data
+    // formulas to scale data: yScale from 0% to 100% of population
     let yScale = d3.scale.linear()
                    .domain([0, 100])
                    .range([h, 0]);
 
+    // formulas to scale data: xScale from 0 to n indicators
     let xScale = d3.scale.linear()
                    .domain([0, n])
                    .range([0, w]);
 
-    // create SVG element
+    // create SVG element for bar chart
     let svg = d3.select("#barchart")
                 .append("svg")
                 .attr("width", w + 2 * margin)
@@ -117,22 +126,22 @@ function makeBarChart(dataset) {
                 .append("g")
                 .attr("transform", "translate(" + margin + "," + margin +")");
 
-    // add title for barchart
+    // title for bar chart
     svg.append("text")
-       .text("Indicators for life satisfaction")
+       .text("Well-being indicators of population")
        .attr("x", 2 * padding)
        .attr("y", 0)
-       .style("font-size", "25px")
+       .style("font-size", "25px");
 
     // get tool tip
     var tool_tip = d3.tip()
-                     .attr('class', 'd3-tip')
+                     .attr("class", "d3-tip")
                      .offset([-10, 0])
                      .html(function(d) { return d + "%" });
     svg.call(tool_tip);
 
     // draw x axis
-    let xdata = ["employment rate", "educ. atainment", "self rep. health"];
+    let xdata = ["employment rate", "educ. attainment", "self rep. health"];
 
     let xAxis = d3.svg.axis()
                       .scale(xScale)
@@ -156,18 +165,17 @@ function makeBarChart(dataset) {
     svg.append("g")
        .attr("class", "axis")
        .call(yAxis)
-
        .append("text")
        .attr("transform", "rotate(-90)")
        .attr("y", 0 - margin)
        .attr("x", 0 - (h / 2))
        .attr("dy", "1em")
        .style("text-anchor", "middle")
-       .text("Percentage of population (%)");
+       .text("part of population (%)");
 
-    // draw rectangles
+    // draw rectangles bar chart
     let rects = svg.selectAll("rect")
-               .data(dataset)
+               .data(indicatorData)
                .enter()
                .append("rect")
                .attr("class", "bar");
@@ -176,172 +184,194 @@ function makeBarChart(dataset) {
          .attr("width", w / 3 - padding)
          .attr("x", function(d, i) {return ((i * w) / n) + padding})
          .attr("y", function(d) {return h - (h - yScale(d))})
-         .on('mouseover', tool_tip.show)
-         .on('mouseout', tool_tip.hide);
+         .on("mouseover", tool_tip.show)
+         .on("mouseout", tool_tip.hide);
+
+    formatMapData();
+}
+
+// countrycode: {country, well-being score, fillkey}
+var mapDataLS = {};
+var mapDataLE = {};
+
+
+/** Formats data such that it is usable for datamaps */
+function formatMapData() {
+
+    // scale to assign class to life satisfaction
+    let cScaleLS = function(LS) {
+        if (LS < 6) {
+            return "Low";
+        } else if (LS < 7) {
+            return "Middle";
+        } else {
+            return "High";
+        }
+    }
+
+    // scale to assign class to life expectancy
+    let cScaleLE = function(LE) {
+        if (LE < 80) {
+            return "Low";
+        } else if (LE < 82) {
+            return "Middle";
+        } else {
+            return "High";
+        }
+    }
+
+    let n = mapData.length;
+
+    // converts data into correct format for the map
+    for (let i = 0; i < n; i ++) {
+        mapDataLS[mapData[i][1]] = {"country" : mapData[i][0],
+                                    "lifeValue" : mapData[i][2],
+                                    "fillKey" : cScaleLS(mapData[i][2])};
+    }
+
+    for (let i = 0; i < n; i ++) {
+        mapDataLE[mapData[i][1]] = {"country" : mapData[i][0],
+                                    "lifeValue" : mapData[i][3],
+                                    "fillKey" : cScaleLE(mapData[i][3])};
+    }
 
     getMap();
 }
 
+var map;
 
-/** loads a map zoomed in on Europe. */
+/** Loads a map zoomed in on Europe. */
 function getMap() {
 
-    // formula for assigning class(low, middle, high) to life satisfaction score
-    let cScaleLS = function(LS) {
-        if (LS < 6) {
-            return "low"
-        }
-        else if (LS < 7) {
-            return "middle"
-        }
-        else {
-            return "high"
-        }
-    }
-
-    let cScaleLE = function(LE) {
-        if (LE < 80) {
-            return "low"
-        }
-        else if (LE < 82) {
-            return "middle"
-        }
-        else {
-            return "high"
-        }
-    }
-
-    // converts data into correct format for the map
-    let n = countries.length;
-    let mapDataLS = {};
-    let mapDataLE = {};
-
-    for (let i = 0; i < n; i ++) {
-        mapDataLS[countries[i][1]] = {"country" : countries[i][0],
-                                    "life" : countries[i][2],
-                                    "fillKey" : cScaleLS(countries[i][2])}
-    }
-
-    for (let i = 0; i < n; i ++) {
-        mapDataLE[countries[i][1]] = {"country" : countries[i][0],
-                                    "life" : countries[i][3],
-                                    "fillKey" : cScaleLE(countries[i][3])}
-    }
-
-    // draws map according data
-    var map = new Datamap({
+    // get new map
+    map = new Datamap({
         element: document.getElementById("worldmap"),
 
-        // when clicked on map: update bar chart
+        // zoom in on Europe
+        setProjection: function(element) {
+            var projection = d3.geo.equirectangular()
+                .center([13, 52])
+                .rotate([4.4, 0])
+                .scale(650)
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+            var path = d3.geo.path()
+                             .projection(projection);
+            return {path: path, projection: projection};
+        },
+
+        // geography configuration
+        geographyConfig: {
+            borderColor: "black",
+            popupOnHover: true,
+            highlightOnHover: true,
+            highlightFillColor: "#1ab2ff",
+            highlightBorderColor: "white",
+            highlightBorderWidth: 1.5,
+            highlightBorderOpacity: 1,
+
+            // pop-up: life satisfaction/ expectancy when hovered over country
+            popupTemplate: function(geography, data) {
+
+                // the score for life satisfaction goes from 0 to 10
+                let maxLifeSat = 10;
+
+                if (data.lifeValue <= maxLifeSat) {
+                    return "<div class=hoverinfo> \
+                            <strong>" + data.country + "</strong><br/> \
+                            Life satisfaction: <br/>" + data.lifeValue +
+                            "</div>";
+                } else {
+                    return "<div class=hoverinfo> \
+                            <strong>" + data.country + "</strong><br/> \
+                            Life expectancy: <br/>" + data.lifeValue + "years \
+                            </div>";
+                }
+            }
+        },
+
+        // update bar chart when country is clicked
         done: function(datamap) {
-            datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+
+            datamap.svg.selectAll('.datamaps-subunit')
+                       .on('click', function(geography) {
                 if ((indicatorData[geography.properties.name]) == null) {
-                    console.log("no data")}
-                else {
+                    console.log("no data");
+                } else {
                 updateCountry(indicatorData[geography.properties.name]);
-                let newName = d3.selectAll("#countryName")
-                                .text(geography.properties.name)
+                let newCountryName = d3.selectAll("#newName")
+                                       .text(geography.properties.name);
                 }
             });
         },
 
-        // zoom in on Europe
-        setProjection: function(element) {
-        var projection = d3.geo.equirectangular()
-            .center([13, 52])
-            .rotate([4.4, 0])
-            .scale(650)
-            .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
-        var path = d3.geo.path()
-                         .projection(projection);
-        return {path: path, projection: projection};
-        },
-
-        // geography configuration 
-        geographyConfig: {
-            borderColor: 'black',
-            popupOnHover: true,
-            highlightOnHover: true,
-            highlightFillColor: "#1ab2ff",
-            highlightBorderColor: "darkgreen",
-            highlightBorderWidth: 1.5,
-            highlightBorderOpacity: 1,
-
-            // shows pop-up when hovered over country
-            popupTemplate: function(geography, data) {
-                    return "<div class=hoverinfo> \
-                        <strong>" + data.country + "</strong><br/> \
-                        Life Indicator:<br/>" + data.life + "</div>"
-            }
-        },
-
-        // colors country according to life satisfaction (dark = more satisfied)
+        // colors country according to well-being
         fills: {
-            low: '#f7fcb9',
-            middle: '#addd8e',
-            high: '#31a354',
+            Low: '#f7fcb9',
+            Middle: '#addd8e',
+            High: '#31a354',
             defaultFill: "lightgrey"
         },
 
-        // mapData: country, life satisfaction, fill key
+        // mapData: country, well-being value, fill key
         data: {},
-        
-
     });
 
+    addLegend();
+    updateMap();
+}
+
+
+/** Adds legend for worldmap. */
+function addLegend() {
+
+    let legend = {
+        legendTitle: "Legend",
+        defaultFillName: "No data"
+    }
+    map.legend(legend);
+}
+
+/** Updates map based on button clicked: life satisfaction or expectancy. */
+function updateMap() {
+
+    // initialize map with life satisfaction data
     map.updateChoropleth(mapDataLS);
 
-    // button fourth variable
-    var button = d3.selectAll(".btn")
+    // update map based on button clicked
+    let button = d3.selectAll(".btn")
                    .on("click", function () {
                         let life = this.getAttribute("value");
                         if (life == "lifeexp") {
                             map.updateChoropleth(mapDataLE);
-                        }
-                        else {
+                        } else {
                             map.updateChoropleth(mapDataLS);
                         }
-                    })
-
-    // add legend for worldmap
-    var legend = {
-        legendTitle: "legend",
-        defaultFillName: "No data",
-    }
-    map.legend(legend)
-    
+                    });
 }
 
 
-/** 
-* Updates bar chart according to country clicked on.
-*/
+/** Updates bar chart according to country clicked on. */
 function updateCountry(dataset) {
 
-// define size and margins
-const margin = 50;
-const w = 450 - 2 * margin;
-const h = 380 - 2 * margin;
-const padding = 10;
-const n = dataset.length;
+    // define size and margins
+    const margin = 50;
+    const w = 550 - 2 * margin;
+    const h = 450 - 2 * margin;
+    const padding = 10;
+    const n = dataset.length;
 
-// formulas to scale data
-let yScale = d3.scale.linear()
-               .domain([0, 100])
-               .range([h, 0]);
+    // formulas to scale data
+    let yScale = d3.scale.linear()
+                   .domain([0, 100])
+                   .range([h, 0]);
 
-let xScale = d3.scale.linear()
-               .domain([0, n])
-               .range([0, w]);
-
+    // transition
     let t = d3.transition()
               .duration(750);
 
-    svg = d3.selectAll("#barchart")
-
-
     // select rectangles of bar chart
-    var rects = svg.selectAll("rect")
+    let svg = d3.selectAll("#barchart")
+    let rects = svg.selectAll("rect")
                    .data(dataset);
 
     // enter

@@ -19,32 +19,102 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="linkv.css">
+
 </head>
 
 <body>
 
+    <!-- navigtion bar -->
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">`Linked Views</a>
+        <div class="container-fluid">
+            <div class="navbar-header"> 
+                <a class="navbar-brand" href="#">Linked Views</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html"> Visualization </a></li>
+                <li><a href="story.html"> Story </a></li>
+                <li class="active"><a href="designchoice.html"> Design </a></li>
+                <li><a href="source.html"> Source </a></li>
+            </ul>
         </div>
-        <ul class="nav navbar-nav">
-          <li><a href="index.html"> visualization </a></li>
-          <li><a href="story.html"> story </a></li>
-          <li class="active"><a href="designchoice.html"> design choice </a></li>
-          <li><a href="source.html"> source </a></li>
-        </ul>
-      </div>
     </nav>
     
-
+    <!-- page header -->
     <div class="jumbotron text-center">
-        <h1> Linked views </h1>
-        <p> Shan Shan Huang (10768793) </p>
+        <h1> Better Life Index </h1>
+        <h2> Minor Progammeren (UvA) - DataProcessing </h2>
+        <h2> Shan Shan Huang (10768793) </h2>
+        <p> An interactive map that allows you to compare well-being across 
+            countries in Europe
+        </p>
     </div>
 
-    <p> Hallo, hier komt een verhaal over de design choice </p>
+    <div class="row">
 
+        <!-- Picture design choice -->
+        <div class="col-sm-3">
+            <div class="thumbnail">
+                <img src="https://www.itm.edu/wp-content/uploads/2018/02/man-doubting-about-the-direction_1133-21.jpg" 
+                     alt="design choice image" style="width:350px;height:300px">
+            </div>
+        </div>
 
+        <!-- story behind design choice -->
+        <div class="col-sm-9">
 
+            <h2> The reason behind the design </h2>
+
+            <h3> Map of Europe </h3>
+            <p> The Better Life index is an interesting dataset that allows you 
+                to compare well-being across countries. The reason I chose to
+                draw a map is because a map is a very clear way to visualize 
+                variables per country. I decided to zoom in on Europe, because
+                data was available for almost all countries in Europe, while 
+                data from countries in other continents was limited. I thought
+                it interesting to see how life satisfaction and life expectancy
+                is distributed in Europe, which is why I chose these two
+                variables. The countries are coloured green based on their life
+                satisfaction score and life expectancy. The darker the color
+                the "better" the score or expectancy. I designed the buckets
+                for the data to fill the countries, such that there are three 
+                classes: low, middle, high. The reason to do three buckets and 
+                not more was to keep it clear.
+            </p>
+
+            <h3> The bar chart </h3>
+            <p> The bar chart contains three well-being indicators: employment
+                rate, educational attainment, and self-reported health. I 
+                thought it was interesting to see how these three relate to 
+                each other. Does high educational attainment cause a high 
+                employment rate? Does high employment rate cause low 
+                self-reported health? A bar chart would make it easy to compare 
+                their relationship with eachother. I decided to do three 
+                indicators so that is was easy to keep the overview and because 
+                all three the indicators have the same scale on the y-axis 
+                ( % of population).
+
+            <h3> Interaction between map and bar chart </h3>
+            <p> Personally, I think the interaction between the map and the bar 
+                chart is the most interesting one. I was curious to know which 
+                indicators might influence life satisfaction and life expectancy
+                per country. So that is why I designed the map so that when a 
+                country is clicked, it will update the bar chart according to 
+                the country.
+            </p>
+
+            <h3> Overall design of the website </h3>
+            <p> I tried to keep everything clear and simple. The index page with
+                the visualization is divided in three parts: the buttons where 
+                you can update the map, the map of europe, and the bar chart. 
+                An interaction with one part, will lead to an update to the other. 
+                A navigation bar on top also divides the visualization from the 
+                data. As might be noticed, the general theme color is green.
+                This color was chosen, because green is often associated with 
+                energy, growth, and harmony. This is perfect because it shows 
+                you data about life! </p>
+        </div>
+    </div>
+</body>
 </html>

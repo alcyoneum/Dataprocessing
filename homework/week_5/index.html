@@ -16,9 +16,6 @@
 
     <title> Linked views </title>
 
-    <!-- style -->
-    <link rel="stylesheet" type="text/css" href="linkv.css" >
-
     <!-- loads d3v3 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 
@@ -43,52 +40,67 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="linkv.css">
+
 </head>
 
 <body>
 
     <!-- navigtion bar -->
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">`Linked Views</a>
+
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"> Linked Views </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html"> Visualization </a></li>
+                <li><a href="story.html"> Story </a></li>
+                <li><a href="designchoice.html"> Design choice </a></li>
+                <li><a href="source.html"> Source </a></li>
+            </ul>
         </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="index.html"> visualization </a></li>
-          <li><a href="story.html"> story </a></li>
-          <li><a href="designchoice.html"> design choice </a></li>
-          <li><a href="source.html"> source </a></li>
-        </ul>
-      </div>
+
     </nav>
     
-
+    <!-- page header -->
     <div class="jumbotron text-center">
-        <h1> Linked views </h1>
-        <p> Shan Shan Huang (10768793) </p>
+        <h1> Better Life Index </h1>
+        <h2> Minor Progammeren (UvA) - DataProcessing </h2>
+        <h2> Shan Shan Huang (10768793) </h2>
+        <p> An interactive map that allows you to compare well-being across countries in Europe </p>
     </div>
 
+    <!-- data visualization -->
     <div class="container">
-
         <div class="row">
 
-            <div class="col-sm-6" style="background-color:lightblue">
-
+            <!-- buttons to update map -->
+            <div class="col-md-2" >
+                <h2 style="font-weight:bold; color:darkgreen"> Well-being Indicator </h2>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-success" value="lifesat"> life satisfaction</button>
-                    <button type="button" class="btn btn-success" value="lifeexp">life expectancy</button>
+                    <button type="button" class="btn btn-success btn-lg"
+                            value="lifesat"> Life Satisfaction
+                    </button>
+                    <button type="button" class="btn btn-success btn-lg"
+                            value="lifeexp"> Life Expectancy
+                    </button>
                 </div>
+            </div>
 
-                <!-- container for world map -->
+            <!-- container for map -->
+            <div class="col-md-6" style="background-color:lightblue">
+                <h2 style="font-weight:bold; color:darkgreen"> Map of Europe </h2>
                 <div id="worldmap" style="position: relative; width: 550px; height: 400px;"></div>
-
             </div>
 
             <!-- container for bar chart -->
-            <div class="col-sm-6" id="barchart"> </div>
+            <h2 style="font-weight:bold; color:darkgreen" id=countryName>Country: </h2>
+            <div class="col-md-4" id="barchart"> </div>
 
         </div>
-
     </div>
 
+</body>
 </html>

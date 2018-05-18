@@ -19,45 +19,87 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="linkv.css">
+
 </head>
 
 <body>
 
+    <!-- navigation bar -->
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">`Linked Views</a>
+        <div class="container-fluid">
+            <div class="navbar-header"> <a class="navbar-brand" href="#">`Linked Views</a></div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html"> Visualization </a></li>
+                <li class="active"><a href="story.html"> Story </a></li>
+                <li><a href="designchoice.html"> Design choice </a></li>
+                <li><a href="source.html"> Source </a></li>
+            </ul>
         </div>
-        <ul class="nav navbar-nav">
-          <li><a href="index.html"> visualization </a></li>
-          <li class="active"><a href="story.html"> story </a></li>
-          <li><a href="designchoice.html"> design choice </a></li>
-          <li><a href="source.html"> source </a></li>
-        </ul>
-      </div>
     </nav>
     
-
+    <!-- page header -->
     <div class="jumbotron text-center">
-        <h1> Linked views </h1>
-        <p> Shan Shan Huang (10768793) </p>
+        <h1> Better Life Index </h1>
+        <h2> Minor Progammeren (UvA) - DataProcessing </h2>
+        <h2> Shan Shan Huang (10768793) </h2>
+        <p> An interactive map that allows you to compare well-being across countries in Europe </p>
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+
+        <!-- picture better life story -->
+        <div class="col-sm-3">
             <div class="thumbnail">
-                <img src="http://www.zinos.com/wp-content/uploads/2017/06/Better-life.jpg" alt="better life image" style="width:500px;height:350px">
+                <img src="http://quoteforinsuronline.com/wp-content/uploads/2017/01/Good-Idea-for-a-Better-Life-Ahead.jpg" alt="better life story image" style="width:350px;height:300px">
             </div>
         </div>
 
-        <div class="col-sm-8">
-            <h1> The story behind the data </h1>
-            <p style="font-size: 20px"> The visualization is based on 
-            data from the better life index of 2016. It allows you
-            to compare well-being across countries in Europe. Life satisfaction score or life expectancy are shown per country. In addition, three indicators for well-being are shown: employment rate, educational attainment, and self reported-health. Do some of these indicators have an influence on life satisfaction or life expectancy? Portugal for example has a low life satisfaction, and the indicators: educational atainment and self reported health are low relatively to other countries. In contrast with Norway, which has a high life satisfaction, high educational atainment, and self reported health. It seems that educational atainment and self reported health have an influence on life satisfaction, while employment rate does not seem to influence life satisfaction a lot. </p>
+        <!-- story behind data -->
+        <div class="col-sm-9">
+
+            <h2> The story behind the data </h2>
+
+            <p> The Better Life Index allows you to compare well-being across 
+                countries, measuring several well-being indicators. The life 
+                satisfaction score evaluates how people see their life as a 
+                whole. It is based on the Cantril Ladder that rates people's 
+                life satisfaction on a scale from 0 to 10. Life expectancy 
+                measures how long average people are expected to live based on 
+                age-specific death rates that are prevailing. What are possible 
+                qualities in a country that can influence either life 
+                satisfaction or life expectancy? This visualization shows three 
+                qualities: employment rate, educational attainment, and 
+                self-reported health.
+            </p>
+
+            <p> The employment rate in a country is the percentage of the working-age
+                (16-64 years) population. Is it possible that employed people 
+                are more satisfied with their life than those who are not 
+                employed? And how does employment rate relate to life expectancy? 
+                Is your life expectancy lower when you are unemployed, 
+                because it is harder to support yourself?
+            </p>
+
+            <p> The educational attainment is the percentage of the adult 
+                population (25-64 years) holding at least an upper secondary 
+                degree. Are people more satisfied with their life when holding 
+                a degree? Is life expectancy lower when educational attainment 
+                is high, because studying is stressful?
+            </p>
+
+            <p> The self-reported health is the percentage of the population 
+                aged 15 years and older who reported their health as good in 
+                general. Are people more satisfied with their life when they 
+                feel healthy? Is life expectancy high when self-reported health 
+                is high as well?
+            </p>
+
+            <p> The visualization will show you some interesting and unexpected results! </p>
+
         </div>
     </div>
 
-
-
+</body>
 </html>

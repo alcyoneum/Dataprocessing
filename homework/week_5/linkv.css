@@ -10,6 +10,12 @@
 *  feeling when walking home.
 */
 
+/* page header */
+.jumbotron {
+    background-color: #009900;
+    color: #003300;
+}
+
 /* axis for bar chart */
 .axis path,
 .axis line {
@@ -17,18 +23,23 @@
     stroke: black; 
     shape-rendering: crispEdges;
 }
-
 .axis text {
     font-family: sans-serif;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
 }
 
-/* colors for rectangles in bar chart */
+/* country header bar chart */
+#countryName {
+    color: darkgreen;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* colors of rectangles in bar chart */
 .bar:hover {
     fill: #1ab2ff;
 }
-
 .bar {
     fill: #88cc00;
 }
